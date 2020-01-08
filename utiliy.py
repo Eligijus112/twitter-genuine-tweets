@@ -1,5 +1,7 @@
+import pandas as pd
 import numpy as np
 import re
+from keras.preprocessing.sequence import pad_sequences
 
 
 class Embeddings():
@@ -35,10 +37,30 @@ class Embeddings():
 
 def clean_tweets(tweet):
     """
-    A method to clean a tweet 
+    A method to clean a tweet for special characters
     """
     tweet = re.sub('#', ' # ', tweet)
     tweet = re.sub('@', ' @ ', tweet)
     tweet = re.sub( r'\s+', ' ', tweet).strip()
 
     return tweet
+
+def string_to_tensor(string_list, tokenizer, max_len):
+    """
+    A method to convert a string list to a tensor for a deep learning model
+    """    
+    string_list = tokenizer.texts_to_sequences(string_list)
+    string_list = pad_sequences(string_list, maxlen=max_len)
+    
+    return string_list
+
+def additional_features(string_list):
+    """
+    A method that creates an additional feature matrix regarding the tweets
+    """    
+    return pd.DataFrame({
+        'length': [len(x) for x in string_list],
+        'capital_letter_count': [len(re.findall(r'[A-Z]', x)) for x in string_list],
+        'question_marks': [len(re.findall(r'\?', x)) for x in string_list],
+        'exclamations': [len(re.findall(r'\!', x)) for x in string_list]
+    })
