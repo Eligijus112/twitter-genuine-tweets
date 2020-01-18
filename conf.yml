@@ -1,0 +1,5 @@
+pipeline:
+  k_fold: True 
+  save_results: True
+  batch_size: 256
+  epochs: 4
