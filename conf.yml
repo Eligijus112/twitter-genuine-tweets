@@ -1,5 +1,5 @@
 pipeline:
-  k_fold: True 
-  save_results: True
+  k_fold: False
+  save_results: False
   batch_size: 256
   epochs: 4
