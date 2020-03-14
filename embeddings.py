@@ -31,7 +31,7 @@ class Embeddings():
         if tokenizer is not None: 
             word_index = tokenizer.word_index
 
-        embedding_matrix = np.zeros((max_features, self.vector_dimension))
+        embedding_matrix = np.zeros((max_features + 1, self.vector_dimension))
         for index, word in enumerate(word_index.keys()):
             if index > max_features:
                 break

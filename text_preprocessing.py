@@ -19,7 +19,10 @@ class TextToTensor():
         
         return string_list
 
-def clean_text(string: str, punctuations=r'''!()-[]{};:'"\,<>./?@#$%^&*_~''') -> str:
+def clean_text(
+    string: str, 
+    punctuations=r'''!()-[]{};:'"\,<>./?@#$%^&*_~''',
+    stop_words=[]) -> str:
     """
     A method to clean text 
     """
@@ -36,6 +39,9 @@ def clean_text(string: str, punctuations=r'''!()-[]{};:'"\,<>./?@#$%^&*_~''') ->
 
     # Converting the text to lower
     string = string.lower()
+
+    # Removing stop words
+    string = ' '.join([word for word in string.split() if word not in stop_words])
 
     # Cleaning the whitespaces
     string = re.sub(r'\s+', ' ', string).strip()
