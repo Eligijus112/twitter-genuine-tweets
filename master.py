@@ -16,6 +16,9 @@ from sklearn.model_selection import KFold
 # Import the main analysis pipeline
 from pipeline import Pipeline
 
+# Tensor creation class
+from text_preprocessing import TextToTensor
+
 # Reading the configuration file
 import yaml
 with open("conf.yml", 'r') as file:
@@ -79,6 +82,26 @@ results = Pipeline(
     epochs=conf.get('epochs'),
     batch_size=conf.get('batch_size')
 )
+
+# Some sanity checks
+good = ["Fire in Vilnius! Where is the fire brigade??? #emergency"]
+bad = ["Sushi or pizza? Life is hard :(("]
+
+TextToTensor_instance = TextToTensor(
+tokenizer=results.tokenizer,
+max_len=conf.get('max_len')
+)
+
+# Converting to tensors
+good_nn = TextToTensor_instance.string_to_tensor(good)
+bad_nn = TextToTensor_instance.string_to_tensor(bad)
+
+# Forecasting
+p_good = results.model.predict(good_nn)[0][0]
+p_bad = results.model.predict(bad_nn)[0][0]
+
+print(f'Sentence: {good_nn} Score: {p_good}')
+print(f'Sentence: {bad_nn} Score: {p_bad}')
 
 # Saving the predictions
 test['prob_is_genuine'] = results.yhat

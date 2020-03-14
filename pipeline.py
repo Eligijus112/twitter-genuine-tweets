@@ -42,6 +42,9 @@ class Pipeline:
         tokenizer = Tokenizer()
         tokenizer.fit_on_texts(X_train)
 
+        # Saving the tokenizer
+        self.tokenizer = tokenizer
+
         # Creating the embedding matrix
         embedding = Embeddings(embed_path, embed_dim)
         embedding_matrix = embedding.create_embedding_matrix(tokenizer, len(tokenizer.word_counts))
